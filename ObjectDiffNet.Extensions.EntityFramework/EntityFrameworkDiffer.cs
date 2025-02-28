@@ -9,9 +9,9 @@ public static class EntityFrameworkDiffer
     /// <summary>
     /// Returns differences for the specified <paramref name="entry"/>.
     /// </summary>
-    /// <param name="differ"></param>
-    /// <param name="entry"></param>
-    /// <returns></returns>
+    /// <param name="differ">IDiffer to extend</param>
+    /// <param name="entry">EntityEntry to apply differences to.</param>
+    /// <returns>IEnumerable of Differences</returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static IEnumerable<Difference> GetDifferences(this IDiffer differ, EntityEntry entry)
     {
