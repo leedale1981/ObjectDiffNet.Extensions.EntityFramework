@@ -1,11 +1,11 @@
 # ObjectDiffNet
-Simple library for generating differences between objects and their properties in .NET
-
+Provides extensions for the ObjectDiffNet library to make it easier to use with Microsoft Entity Framework.
 ## Usage
 ```csharp
 using ObjectDiffNet;
 
 IDiffer diff = new Differ();
-IEnumerable<Difference> _differences = diff.GetDifferences(_object1, _object2);
+EntityEntry entry = dbContext.ChangeTracker.Entries().FirstOrDefault();
+IEnumerable<Difference> _differences = diff.GetDifferences(entry);
 
 Assert.Contains(new("StringProperty", "Test", "Test2", typeof(string)), _differences);

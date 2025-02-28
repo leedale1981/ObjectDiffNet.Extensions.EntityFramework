@@ -49,7 +49,7 @@ public static class EntityFrameworkDiffer
     }
     
     /// <summary>
-    /// 
+    /// Returns differences for all entities of the specified <paramref name="entityType"/> in the specified <paramref name="dbContext"/>.
     /// </summary>
     /// <param name="differ"></param>
     /// <param name="dbContext"></param>
@@ -58,7 +58,8 @@ public static class EntityFrameworkDiffer
     public static IEnumerable<Difference> GetDifferences(this IDiffer differ, DbContext dbContext, Type entityType)
     {
         List<Difference> differences = new List<Difference>();
-        IEnumerable<EntityEntry> entries = dbContext.ChangeTracker.Entries().Where(e => e.Entity.GetType() == entityType);
+        IEnumerable<EntityEntry> entries = dbContext.ChangeTracker.Entries()
+            .Where(e => e.Entity.GetType() == entityType);
         
         foreach (var entry in entries)
         {

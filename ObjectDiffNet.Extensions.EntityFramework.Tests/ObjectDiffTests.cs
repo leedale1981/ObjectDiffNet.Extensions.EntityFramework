@@ -46,7 +46,7 @@ public class ObjectDiffTests : IAsyncLifetime
             DateProperty = new DateTime(2021, 1, 1),
             DecimalProperty = 1.1m
         });
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
     [Fact]
@@ -64,35 +64,35 @@ public class ObjectDiffTests : IAsyncLifetime
     [Fact]
     public void Differences_StringProperty_Has_Correct_Difference()
     {
-        Assert.Contains(new("StringProperty", "Test", "Test2", typeof(string)), 
+        Assert.Contains(new("TestClass","StringProperty", "Test", "Test2", typeof(string)), 
             _differences);
     }
     
     [Fact]
     public void Differences_IntProperty_Has_Correct_Difference()
     {
-        Assert.Contains(new("IntProperty", "1", "2", typeof(int)), 
+        Assert.Contains(new("TestClass","IntProperty", "1", "2", typeof(int)), 
             _differences);
     }
     
     [Fact]
     public void Differences_BoolProperty_Has_Correct_Difference()
     {
-        Assert.Contains(new("BoolProperty", "True", "False", typeof(bool)), 
+        Assert.Contains(new("TestClass","BoolProperty", "True", "False", typeof(bool)), 
             _differences);
     }
     
     [Fact]
     public void Differences_DateProperty_Has_Correct_Difference()
     {
-        Assert.Contains(new("DateProperty", "01/01/2021 00:00:00", "01/02/2021 00:00:00", typeof(DateTime)), 
+        Assert.Contains(new("TestClass","DateProperty", "01/01/2021 00:00:00", "01/02/2021 00:00:00", typeof(DateTime)), 
             _differences);
     }
     
     [Fact]
     public void Differences_DecimalProperty_Not_In_Differences()
     {
-        Assert.DoesNotContain(new("DecimalProperty", "1.1", "1.1", typeof(decimal)), 
+        Assert.DoesNotContain(new("TestClass","DecimalProperty", "1.1", "1.1", typeof(decimal)), 
             _differences);
     }
 
@@ -102,6 +102,9 @@ public class ObjectDiffTests : IAsyncLifetime
 
         TestClass? modifiedTestClass = await _context.TestEntities.FindAsync( (long)1);
         modifiedTestClass.StringProperty = "Test2";
+        modifiedTestClass.BoolProperty = false;
+        modifiedTestClass.DateProperty = new DateTime(2021, 2, 1);
+        modifiedTestClass.IntProperty = 2;
         EntityEntry entityEntry = _context.ChangeTracker.Entries().FirstOrDefault();
         
         IDiffer diff = new Differ();
